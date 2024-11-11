@@ -1,0 +1,21 @@
+name: OWASP-ZAP
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: OWASP ZAP Scan
+        uses: zaproxy/action-baseline@v0.7.0
+        with:
+          # Target URL
+          target: "http://testphp.vulnweb.com/"

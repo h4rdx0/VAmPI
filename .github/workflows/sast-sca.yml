@@ -1,0 +1,25 @@
+name: Checkmarx SAST & SCA Check
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Checkmarx SAST & SCA Check
+        uses: checkmarx/ast-github-action@main
+        with:
+          base_uri: ${{ vars.CX_BASE_URI }}
+          cx_tenant: ${{ vars.CX_TENANT_NAME }}
+          cx_client_id: ${{ vars.CX_CLIENT_ID }}
+          cx_client_secret: ${{ secrets.CX_CLIENT_SECRET }}
+          additional_params: --scan-types "sast,sca" --sast-incremental --threshold 'sast-high=10; sast-medium=20; sca-high=10;' --sast-filter "!**/libs/*,!**/bin/*"
